@@ -1,16 +1,34 @@
 import numpy as np
+import re
+import pandas as pd
 
-def get_data(source = 'blogdata.txt'):
-    # Create numpy array data from blogdata.txt
-    blog_names = np.genfromtxt(source, delimiter='\t', usecols=0, dtype=str)[1:] # Names of all blogs(column 0 in doc)
-    blog_data = np.genfromtxt(source, delimiter='\t', skip_header=1)[:, 1:] # Each blogs word freq. (rows in doc)
-    # named_data = {label: row for label, row in zip(blog_names, blog_data)}  # Pretty presentation (Blog name then word-freq)
-    return blog_data, blog_names
+def get_data(source = 'wikipedia_300/wikipedia_300.csv'):
+    df = pd.read_csv(source)
+    # Each stringed Text becomes array of words.
+    text = df['Text'].str.replace('.', '')
+    words = text.str.split(' |\n')  # Splits default value = whitespace
+    return df, words
 
 
-def elements_for_names(index_list, names):
-    name_list = []
-    for key in index_list:
-        name_list.append(list(names[index_list[key]]))
+# create dictionary of index
+def dictionary(collections):
+    dict = {}
+    for text in collections:
+        for word in text:
+            if word not in dict:
+                dict[word] = len(dict)
 
-    return name_list
+
+    print('done')
+    return dict
+
+
+def dictionaty_two(d_frame):
+    empty_df = pd.DataFrame(columns=['Text', 'Category'])
+    empty_df = empty_df.append({'Text': d_frame[0], 'Category': 'Test'}, ignore_index=True) # TODO: This might be it
+    # TODO: iterate and append lists as ints instead of words
+    print(empty_df)
+
+
+data, words = get_data()
+dictionaty_two(words)
