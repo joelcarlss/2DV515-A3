@@ -1,34 +1,39 @@
-import numpy as np
-import re
 import pandas as pd
-
-def get_data(source = 'wikipedia_300/wikipedia_300.csv'):
-    df = pd.read_csv(source)
-    # Each stringed Text becomes array of words.
-    text = df['Text'].str.replace('.', '')
-    words = text.str.split(' |\n')  # Splits default value = whitespace
-    return df, words
+import numpy as np
+from db import *
+import glob
 
 
-# create dictionary of index
-def dictionary(collections):
-    dict = {}
-    for text in collections:
-        for word in text:
-            if word not in dict:
-                dict[word] = len(dict)
+def save_to_db(df):
+	sql = "INSERT INTO text (name, category, text) VALUES (%s, %s, %s)"
+	# val = (name, category, text)
+	# mycursor.execute(sql, val)
+	df.to_sql(df, mydb)
 
 
-    print('done')
-    return dict
+def get_data():
+	list_of_files = glob.glob('./wikipedia/Words/*/*')  # create the list of file
+	df = pd.DataFrame(columns=['text', 'name', 'category'])
+	dict = {}
+
+	for file_name in list_of_files:
+		path = str.split(file_name, '/')
+		file = open(file_name).read()
+		file = file.replace('.', '')
+		array = file.split(' ')[:-1]
+		int_array = []
+		for word in array:
+			if word not in dict:
+				dict[word] = len(dict)
+			int_array.append(dict[word])
+
+		int_array = np.array(int_array)
+		df = df.append({'text': int_array, 'name': path[4], 'category': path[3]}, ignore_index=True)
+
+	return df, dict
 
 
-def dictionaty_two(d_frame):
-    empty_df = pd.DataFrame(columns=['Text', 'Category'])
-    empty_df = empty_df.append({'Text': d_frame[0], 'Category': 'Test'}, ignore_index=True) # TODO: This might be it
-    # TODO: iterate and append lists as ints instead of words
-    print(empty_df)
 
+data_frame, dictionary = get_data()
 
-data, words = get_data()
-dictionaty_two(words)
+print(data_frame)

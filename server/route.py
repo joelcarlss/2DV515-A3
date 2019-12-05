@@ -1,6 +1,6 @@
 from flask_restful import Resource, Api
 from k_means import *
-from utils import *
+from utils_csv_reader import *
 from json import *
 
 
