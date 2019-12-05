@@ -29,7 +29,7 @@ def get_data():
 
 		int_array = np.array(int_array)
 		df = df.append({'text': int_array, 'name': path[4], 'category': path[3]}, ignore_index=True)
-
+		break
 	return df, dict
 
 

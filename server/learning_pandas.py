@@ -10,6 +10,4 @@ df[df['Category'] == 'Games']
 # all texts where Category == Games
 result = df['Text'][df['Category'] == 'Games']
 
-
-
 print(result)
