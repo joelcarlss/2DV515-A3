@@ -30,9 +30,30 @@ def get_data():
 		int_array = np.array(int_array)
 		df = df.append({'text': int_array, 'name': path[4], 'category': path[3]}, ignore_index=True)
 		df = pd.DataFrame(df) # TODO: remove
-		if len(df) > 4:
-			break
+		# if len(df) > 100:
+			# break
 	df = df.to_numpy()
 	return df, dict
 
+
+
+df, dictionary = get_data()
+
+
+def words_to_index(words):
+	indexes = []
+	for word in words:
+		if word in dictionary:
+			indexes.append(dictionary[word])
+	return indexes
+
+
+# Return all documents including word
+def get_all_occurrences(index_list):
+	result = []
+	for a in df:
+		if any(item in index_list for item in a[0]): # Exchange for np.in1d(a[0], index_list)
+			result.append(a)
+
+	return result
 
