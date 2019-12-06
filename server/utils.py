@@ -29,11 +29,10 @@ def get_data():
 
 		int_array = np.array(int_array)
 		df = df.append({'text': int_array, 'name': path[4], 'category': path[3]}, ignore_index=True)
-		break
+		df = pd.DataFrame(df) # TODO: remove
+		if len(df) > 4:
+			break
+	df = df.to_numpy()
 	return df, dict
 
 
-
-data_frame, dictionary = get_data()
-
-print(data_frame)
