@@ -20,7 +20,7 @@ def calculate_page_rank():
 	df = get_data()
 	print(df['name'])
 	# https://stackoverflow.com/questions/53342715/pandas-dataframe-select-rows-where-a-list-column-contains-any-of-a-list-of-strin
-	print(df[pd.DataFrame(df['links'].tolist()).isin([test]).any(1)])
+	print(df[pd.DataFrame(df['links'].tolist()).isin([test]).any(1)]) # This hopefully writes out all docs that contains test
 
 
 
