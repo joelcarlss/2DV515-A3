@@ -1,5 +1,6 @@
 import glob
 import pandas as pd
+import numpy as np
 
 
 def get_data():
@@ -10,7 +11,7 @@ def get_data():
 		file = open(file_name).read()
 		file = file.replace('/wiki/', '')
 		array = file.split('\n')[:-1]
-		df = df.append({'name': path[4], 'links': array, 'page_rank': 1}, ignore_index=True)
+		df = df.append({'name': path[4], 'links': array, 'page_rank': 1, 'link_len': len(array)}, ignore_index=True)
 	# length links arr at index 0
 	# print(len(df.iloc[0]['links']))
 	return df
@@ -19,20 +20,17 @@ def get_data():
 def calculate_page_rank():
 	test = 'Computer_scientist'
 	df = get_data()
-	# https://stackoverflow.com/questions/53342715/pandas-dataframe-select-rows-where-a-list-column-contains-any-of-a-list-of-strin
-	# print(df[pd.DataFrame(df['links'].tolist()).isin([test]).any(1)]) # Writes out all docs that contains test
+
 	for index, row in df.iterrows(): # index makes the row readable in right direction. how?!
-		links = df[pd.DataFrame(df['links'].tolist()).isin([row['name']]).any(1)]  # Writes out all docs that contains test
-		#  print(len(links))
-		#  print()
-		iterate_page_rank(links)
+		# https://stackoverflow.com/questions/53342715/pandas-dataframe-select-rows-where-a-list-column-contains-any-of-a-list-of-strin
+		linking_pages = df[pd.DataFrame(df['links'].tolist()).isin([row['name']]).any(1)]  # Writes out all docs that contains test
+		pr = linking_pages['page_rank'] / linking_pages['link_len']
+		page_rank = 0.85 * pr.sum() + 0.15
+		df.loc[index, 'page_rank'] = page_rank
 
-		break
 
+		# TODO: Make it run 20 times then save it to DB
 
-def iterate_page_rank(linked_docs):
-	for index, link_row in linked_docs.iterrows():
-		print(link_row)
 
 
 calculate_page_rank()
