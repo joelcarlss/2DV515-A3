@@ -3,13 +3,8 @@ import numpy as np
 from db import *
 import glob
 
-
-def save_to_db(df):
-	sql = "INSERT INTO text (name, category, text) VALUES (%s, %s, %s)"
-	# val = (name, category, text)
-	# mycursor.execute(sql, val)
-	df.to_sql(df, mydb)
-
+def get_read_data():
+	df = pd.read_pickle(file_name)
 
 def get_data():
 	list_of_files = glob.glob('./wikipedia/Words/*/*')  # create the list of file
@@ -30,12 +25,8 @@ def get_data():
 		int_array = np.array(int_array)
 		df = df.append({'text': int_array, 'name': path[4], 'category': path[3]}, ignore_index=True)
 		df = pd.DataFrame(df) # TODO: remove
-		# if len(df) > 100:
-			# break
 	df = df.to_numpy()
 	return df, dict
-
-
 
 df, dictionary = get_data()
 

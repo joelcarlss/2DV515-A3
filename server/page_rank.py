@@ -26,11 +26,18 @@ def calculate_page_rank():
 		linking_pages = df[pd.DataFrame(df['links'].tolist()).isin([row['name']]).any(1)]  # Writes out all docs that contains test
 		pr = linking_pages['page_rank'] / linking_pages['link_len']
 		page_rank = 0.85 * pr.sum() + 0.15
-		df.loc[index, 'page_rank'] = page_rank
+		df.loc[index, 'page_rank'] = page_rank #  TODO: These three lines can be a oneliner
 
 
 		# TODO: Make it run 20 times then save it to DB
+	print(df)
 
 
 
-calculate_page_rank()
+
+def read_and_save_data():
+	df = calculate_page_rank()
+	df.to_pickle('pagerank.pkl')  # where to save it, usually as a .pkl
+
+
+read_and_save_data()
