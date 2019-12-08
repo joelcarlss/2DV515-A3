@@ -1,34 +1,24 @@
 import pandas as pd
-import numpy as np
-from db import *
-import glob
+import pickle
+from document_data import *
 
-def get_read_data():
-	df = pd.read_pickle(file_name)
 
-def get_data():
-	list_of_files = glob.glob('./wikipedia/Words/*/*')  # create the list of file
-	df = pd.DataFrame(columns=['text', 'name', 'category'])
-	dict = {}
+# Requires that page rank already exists. It is saved for it self
+def merge_save_data_frames():
+	df, dictionary = get_document_data()
+	page_rank = pd.read_pickle('pagerank.pkl')
+	merged_df = pd.merge(df, page_rank, on='name')
+	merged_df.to_pickle('dataframe.pkl')
 
-	for file_name in list_of_files:
-		path = str.split(file_name, '/')
-		file = open(file_name).read()
-		file = file.replace('.', '')
-		array = file.split(' ')[:-1]
-		int_array = []
-		for word in array:
-			if word not in dict:
-				dict[word] = len(dict)
-			int_array.append(dict[word])
+	with open('dictionary.pkl', 'wb') as handle:
+		pickle.dump(merged_df, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-		int_array = np.array(int_array)
-		df = df.append({'text': int_array, 'name': path[4], 'category': path[3]}, ignore_index=True)
-		df = pd.DataFrame(df) # TODO: remove
-	df = df.to_numpy()
-	return df, dict
 
-df, dictionary = get_data()
+def load_data_from_file():
+	df = pd.read_pickle('dataframe.pkl')
+	with open('filename.pickle', 'rb') as handle:
+		dictionary = pickle.load(handle)
+
 
 
 def words_to_index(words):

@@ -16,7 +16,6 @@ def calc_scores(docs, words):
 			else:
 				loc_score[i] += 100000
 		i += 1
-	# loc_score = np.where(loc_score > 0, loc_score, 100000)  # where score is 0, value sets to high
 	return freq, loc_score
 
 
