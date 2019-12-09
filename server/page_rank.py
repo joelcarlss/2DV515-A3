@@ -5,37 +5,54 @@ import numpy as np
 
 def get_data():
 	list_of_files = glob.glob('./wikipedia/Links/*/*')  # create the list of file
-	df = pd.DataFrame(columns=['name', 'links', 'page_rank', 'link_len'])
+	datalist = []
 	for file_name in list_of_files:
 		path = str.split(file_name, '/')
 		file = open(file_name).read()
 		file = file.replace('/wiki/', '')
 		array = file.split('\n')[:-1]
-		df = df.append({'name': path[4], 'links': array, 'page_rank': 1.0, 'link_len': len(array)}, ignore_index=True)
+		s = set(array)
+		datalist.append({'name': path[4], 'links': s, 'page_rank': 1.0})
 		# TODO: MAKE THIS A (LIST?) with sets SET!!
-	return df
+	return datalist
 
 
-def calculate_page_rank(df, iterations):
+def calculate_page_rank(datalist, iterations):
 	print('start calc')
 	i = 0
 	while iterations > i:
-		for index, row in df.iterrows(): # index makes the row readable in right direction. how?!
-			#linking_pages = df[pd.DataFrame(df['links'].tolist()).isin([row['name']]).any(1)]  # Writes out all docs that contains current name
-			#pr = (linking_pages['page_rank'] / linking_pages['link_len']) # TODO: Kolla att det inte finns dokument med samma namn i olika filerls
-			pr = np.array([7, 9])
-			page_rank = 0.85 * pr.sum() + 0.15
-			df.loc[index, 'page_rank'] = page_rank  # TODO: These three lines can be a one liner
+		for page in datalist: # index makes the row readable in right direction. how?!
+			pr = 0
+			for p in datalist:
+				if page['name'] in p['links']:
+					pr += p['page_rank'] / len(p['links'])
+			page['page_rank'] = (0.85 * pr + 0.15)
+
 		i += 1
 		print('Iteration: ', i, '/', iterations)
-	return df
+	return datalist
+
+def normalize(result):
+	# test = result.to_numpy()
+	print(len(result))
+	m = 0
+	for obj in result:
+		if obj['page_rank'] > m:
+			m = obj['page_rank']
+
+	print(m)
+	for i, obj in enumerate(result):
+		result[i]['page_rank'] = (obj['page_rank'] / m)
+	return result
 
 
 def read_and_save_data():
-	df = get_data()
-	result = calculate_page_rank(df, 20)
-	# TODO: normalize!
-	# result.to_pickle('pagerank.pkl')  # where to save it, usually as a .pkl
+	data_list = get_data()
+	result = calculate_page_rank(data_list, 20)
+	result = normalize(result)
+	result = pd.DataFrame(result)
+
+	result.to_pickle('pagerank.pkl')  # where to save it
 
 
 read_and_save_data()

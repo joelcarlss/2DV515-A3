@@ -38,15 +38,13 @@ def run():
 	w_freq, loc_score = calc_scores(relevant_docs, word_index)
 	loc_score = normalize(loc_score, True)  # makes values between 0-1 (Lower is higher)
 	w_freq = normalize(w_freq, False)
+	page_rank = relevant_docs[:, 5]  # The index place where page_rank exists
 	loc_score = loc_score * 0.8
-	page_rank = relevant_docs[:, 6]  # The index place where page_rank exists
-	print(page_rank)
-	# page_rank = normalize(page_rank, False)
 	page_rank = page_rank * 0.5
 	score = w_freq + loc_score + page_rank
 
 	result = np.array(list(zip(score, relevant_docs[:,1], w_freq, loc_score, page_rank)))
-	print(result[result[:, 0].argsort()][::-1][:5]) # Sorts array and reverses it, takes 5 first
+	return result[result[:, 0].argsort()][::-1][:5] # Sorts array and reverses it, takes 5 first
 
 
-run()
+print(run())
