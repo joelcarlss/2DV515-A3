@@ -28,7 +28,7 @@ def normalize(score, small_is_better):
 
 
 def run():
-	words = ['super', 'mario']
+	words = ['java', 'programming']
 	word_index = words_to_index(words)
 	if len(word_index) < 1:
 		return 'No results'
@@ -38,9 +38,11 @@ def run():
 	w_freq, loc_score = calc_scores(relevant_docs, word_index)
 	loc_score = normalize(loc_score, True)  # makes values between 0-1 (Lower is higher)
 	w_freq = normalize(w_freq, False)
-	score = w_freq + 0.8 * loc_score
+	print(relevant_docs)
+	page_rank = relevant_docs[:, 5]  # The index place where page_rank exists
+	score = w_freq + 0.8 * loc_score + 0.5 * page_rank
 
-	result = np.array(list(zip(score, relevant_docs[:,1], w_freq, loc_score)))
+	result = np.array(list(zip(score, relevant_docs[:,1], w_freq, loc_score, page_rank)))
 	print(result[result[:, 0].argsort()][::-1][:5]) # Sorts array and reverses it, takes 5 first
 
 

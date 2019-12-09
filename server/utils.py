@@ -6,20 +6,25 @@ from document_data import *
 # Requires that page rank already exists. It is saved for it self
 def merge_save_data_frames():
 	df, dictionary = get_document_data()
-	page_rank = pd.read_pickle('pagerank.pkl')
+	page_rank = pd.read_pickle('pagerank30.pkl')
 	merged_df = pd.merge(df, page_rank, on='name')
-	merged_df.to_pickle('dataframe.pkl')
+	merged_df.to_pickle('dataframe30.pkl')
 
 	with open('dictionary.pkl', 'wb') as handle:
-		pickle.dump(merged_df, handle, protocol=pickle.HIGHEST_PROTOCOL)
+		pickle.dump(dictionary, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
 def load_data_from_file():
-	df = pd.read_pickle('dataframe.pkl')
-	with open('filename.pickle', 'rb') as handle:
+	df = pd.read_pickle('dataframe30.pkl')
+	df = df.to_numpy()
+	with open('dictionary.pkl', 'rb') as handle:
 		dictionary = pickle.load(handle)
 
+	return df, dictionary
 
+
+df, dictionary = load_data_from_file()
+# merge_save_data_frames()
 
 def words_to_index(words):
 	indexes = []
