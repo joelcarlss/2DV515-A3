@@ -15,7 +15,7 @@ def merge_save_data_frames():
 
 
 def load_data_from_file():
-	df = pd.read_pickle('dataframe30.pkl')
+	df = pd.read_pickle('dataframe.pkl')
 	df = df.to_numpy()
 	with open('dictionary.pkl', 'rb') as handle:
 		dictionary = pickle.load(handle)
