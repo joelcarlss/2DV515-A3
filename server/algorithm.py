@@ -6,16 +6,14 @@ from utils import *
 def calc_scores(docs, words):
 	freq = np.zeros(len(docs))
 	loc_score = np.zeros(len(docs))
-	i = 0
-	for doc in docs:
+	for i, doc in enumerate(docs):
 		for word in words:
 			word_at_index = np.where(doc[0] == word)[0] # list of indexes that contains the current word
 			freq[i] += len(word_at_index)
-			if len(word_at_index) > 0:
+			if len(word_at_index) > 0: # This can't happen!!
 				loc_score[i] += (word_at_index[0] + 1)
 			else:
 				loc_score[i] += 100000
-		i += 1
 	return freq, loc_score
 
 
