@@ -42,7 +42,7 @@ def run(words):
 	page_rank = page_rank * 0.5
 	score = w_freq + loc_score + page_rank
 
-	result = np.array(list(zip(score, relevant_docs[:,1], w_freq, loc_score, page_rank)))
+	result = np.array(list(zip(score, relevant_docs[:,1], w_freq, loc_score, page_rank, relevant_docs[:, 2])))
 	result = result[result[:, 0].argsort()][::-1][:5]  # Sorts array and reverses it, takes 5 first
 	return result_to_object(result)
 

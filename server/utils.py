@@ -48,6 +48,6 @@ def get_all_occurrences(index_list):
 def result_to_object(result):
 	l = []
 	for page in result:
-		l.append({'name': page[1], 'score': page[0], 'content': page[2], 'location': page[3], 'page_rank': page[4]})
+		l.append({'name': page[1], 'score': page[0], 'content': page[2], 'location': page[3], 'page_rank': page[4], 'category': page[5]})
 
 	return l

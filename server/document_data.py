@@ -22,7 +22,5 @@ def get_document_data():
 		int_array = np.array(int_array)
 		df = df.append({'text': int_array, 'name': path[4], 'category': path[3], 'filename': file_name}, ignore_index=True)
 		df = pd.DataFrame(df) # TODO: remove
-	# df = df.to_numpy()
 	return df, dict
-
 

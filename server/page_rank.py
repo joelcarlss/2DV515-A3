@@ -29,13 +29,9 @@ def calculate_page_rank(datalist, iterations):
 		print('Iteration: ', i, '/', iterations)
 	return datalist
 
-def normalize(result):
-	m = 0
-	for obj in result:
-		if obj['page_rank'] > m:
-			m = obj['page_rank']
 
-	print(m) 	# 0.44110984628630157 when iterated
+def normalize(result):
+	m = max(obj['page_rank'] for obj in result)
 	for i, obj in enumerate(result):
 		result[i]['page_rank'] = (obj['page_rank'] / m)
 	return result
