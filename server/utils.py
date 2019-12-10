@@ -26,6 +26,7 @@ def load_data_from_file():
 df, dictionary = load_data_from_file()
 # merge_save_data_frames()
 
+
 def words_to_index(words):
 	indexes = []
 	for word in words:
@@ -43,3 +44,10 @@ def get_all_occurrences(index_list):
 
 	return result
 
+
+def result_to_object(result):
+	l = []
+	for page in result:
+		l.append({'name': page[1], 'score': page[0], 'content': page[2], 'location': page[3], 'page_rank': page[4]})
+
+	return l

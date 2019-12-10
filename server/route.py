@@ -5,5 +5,6 @@ from json import *
 
 class Root(Resource):
     def get(self):
-        # run()
-        return {'res': 'hej'}  # Fetches first column that is Employee ID
+        words = ['java', 'programming']
+        result = run(words)
+        return {'res': result}  # Fetches first column that is Employee ID

@@ -27,8 +27,7 @@ def normalize(score, small_is_better):
 		return score / score.max()
 
 
-def run():
-	words = ['java', 'programming']
+def run(words):
 	word_index = words_to_index(words)
 	if len(word_index) < 1:
 		return 'No results'
@@ -44,7 +43,8 @@ def run():
 	score = w_freq + loc_score + page_rank
 
 	result = np.array(list(zip(score, relevant_docs[:,1], w_freq, loc_score, page_rank)))
-	return result[result[:, 0].argsort()][::-1][:5] # Sorts array and reverses it, takes 5 first
+	result = result[result[:, 0].argsort()][::-1][:5]  # Sorts array and reverses it, takes 5 first
+	return result_to_object(result)
 
 
-print(run())
+print(run(['java', 'programming']))

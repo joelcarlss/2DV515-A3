@@ -7,18 +7,15 @@ def get_data():
 	list_of_files = glob.glob('./wikipedia/Links/*/*')  # create the list of file
 	datalist = []
 	for file_name in list_of_files:
-		path = str.split(file_name, '/')
+		name = str.split(file_name, '/')[4]
 		file = open(file_name).read()
 		file = file.replace('/wiki/', '')
-		array = file.split('\n')[:-1]
-		s = set(array)
-		datalist.append({'name': path[4], 'links': s, 'page_rank': 1.0})
-		# TODO: MAKE THIS A (LIST?) with sets SET!!
+		s = set(file.split('\n')[:-1])
+		datalist.append({'name': name, 'links': s, 'page_rank': 1.0})
 	return datalist
 
 
 def calculate_page_rank(datalist, iterations):
-	print('start calc')
 	i = 0
 	while iterations > i:
 		for page in datalist: # index makes the row readable in right direction. how?!
@@ -33,14 +30,12 @@ def calculate_page_rank(datalist, iterations):
 	return datalist
 
 def normalize(result):
-	# test = result.to_numpy()
-	print(len(result))
 	m = 0
 	for obj in result:
 		if obj['page_rank'] > m:
 			m = obj['page_rank']
 
-	print(m)
+	print(m) 	# 0.44110984628630157 when iterated
 	for i, obj in enumerate(result):
 		result[i]['page_rank'] = (obj['page_rank'] / m)
 	return result
