@@ -1,0 +1,62 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  overflow: auto;
+}
+
+.App-link {
+  color: #09d3ac;
+}
+
+.rotate {
+  color: blue;
+
+  /* Safari */
+  -webkit-transform: rotate(-90deg);
+  
+  /* Firefox */
+  -moz-transform: rotate(-90deg);
+  
+  /* IE */
+  -ms-transform: rotate(-90deg);
+  
+  /* Opera */
+  -o-transform: rotate(-90deg);
+  
+  /* float: left; */
+
+  margin-right: 0px;
+  margin-bottom: 160px;
+  
+}
+
+.MuiListItemText-secondary	{
+  background-color: '#cccccc';
+}
+
+.MuiListItemText-primary	{
+  background-color: '#cccccc'
+}
+
+.MuiFormHelperText-root {
+  background-color: '#cccccc'
+}
+
+h1 {
+  margin-block-end: 0;
+  margin-block-start: 0;
+}

@@ -24,6 +24,7 @@ def load_data_from_file():
 
 
 df, dictionary = load_data_from_file()
+df = list(df)
 # merge_save_data_frames()
 
 
