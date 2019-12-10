@@ -18,7 +18,7 @@ def get_data():
 def calculate_page_rank(datalist, iterations):
 	i = 0
 	while iterations > i:
-		for page in datalist: # index makes the row readable in right direction. how?!
+		for page in datalist:
 			pr = 0
 			for p in datalist:
 				if page['name'] in p['links']:
