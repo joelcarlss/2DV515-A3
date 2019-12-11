@@ -1,19 +1,17 @@
-import { useEffect, useState, useContext } from 'react'
+import { useState, useContext } from 'react'
 import createContainer from 'constate'
-import { getUser, getData, getReqUser } from "./model/api"
 
 const useApp = () => {
-  const [users, setUsers] = useState([])
   const [name, setName] = useState('')
   const [amount, setAmount] = useState('')
   const [algoritm, setAlgoritm] = useState('')
   const [result, setResult] = useState([])
   const [userResult, setUserResult] = useState([])
   const [showUser, setShowUser] = useState(false)
-
+  const [pages, setPages] = useState({})
+  const [wiki, setWiki] = useState({})
 
   return {
-    users,
     name,
     setName,
     amount,
@@ -25,7 +23,11 @@ const useApp = () => {
     showUser,
     setShowUser,
     userResult,
-    setUserResult
+    setUserResult,
+    pages,
+    setPages,
+    wiki,
+    setWiki
   }
 }
 

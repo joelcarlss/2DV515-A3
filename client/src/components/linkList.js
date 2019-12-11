@@ -1,70 +1,117 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import history from '../config/history'
+
 import { makeStyles } from '@material-ui/core/styles'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import ListItemText from '@material-ui/core/ListItemText'
-import Avatar from '@material-ui/core/Avatar'
-import IconButton from '@material-ui/core/IconButton'
-import FormGroup from '@material-ui/core/FormGroup'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import FolderIcon from '@material-ui/icons/Folder'
-import DeleteIcon from '@material-ui/icons/Delete'
 import { useAppState } from '../useAppState'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+import Paper from '@material-ui/core/Paper'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+const useStyles = makeStyles({
+  root: {
+    width: '100%'
+  },
+  paper: {
+    width: '100%',
+    overflowX: 'auto'
+  },
+  table: {
+    minWidth: 650
+  }
+})
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1,
-        maxWidth: 752,
-    },
-    demo: {
-        backgroundColor: '#282c34',
-    },
-    title: {
-        margin: theme.spacing(4, 0, 2),
-    },
-}))
+export default function DenseTable () {
+  const classes = useStyles()
+  const { result } = useAppState()
+  const { pages } = useAppState()
+  const handleClick = (name, i) => {
+    history.push(`${'/wiki/' + name.replace(/_/g, ' ') + '/' + pages[i]}`)
+  }
 
-export default function InteractiveList() {
-    const classes = useStyles()
-    const [dense, setDense] = React.useState(false)
-    const [secondary, setSecondary] = React.useState(false)
-    const { result, setResult } = useAppState()
-    console.log(result)
-    return (
-        <div className={classes.root}>
-            <Grid container spacing={2}>
-                <Grid item xs={12} md={6}>
-                    <div className={classes.demo}>
-                        <List >
-                            {result !== undefined ?
-                                typeof result === 'string' ? <ListItem>
-                                    <ListItemText
-                                        key={result}
-                                        primary={result}
-                                    />
-                                </ListItem> :
-                                    result.map(link => (
-                                        <ListItem>
-                                            <ListItemText
-                                                key={link.name}
-                                                primary={link.name}
-                                                secondary={link.content}
-                                            />
-                                        </ListItem>
-                                    ))
-                                : null}
-                        </List>
-                    </div>
-                </Grid>
+  const renderHeader = () => {
+    if (result.length > 0) {
+      return (
+        <TableHead>
+          <TableRow>
+            <TableCell>Name</TableCell>
+            <TableCell align='right'>Category</TableCell>
+            <TableCell align='right'>Score</TableCell>
+            <TableCell align='right'>Content</TableCell>
+            <TableCell align='right'>Location</TableCell>
+            <TableCell align='right'>Page rank</TableCell>
+          </TableRow>
+        </TableHead>
+      )
+    }
+  }
+  console.log(result)
+  return (
+    <div className={classes.root}>
+      <Paper className={classes.paper}>
+        {typeof result === 'string' ? <ListItem>
+          <ListItemText
+            key={result}
+            primary={result}
+          />
+        </ListItem>
+          : <div>
+            {typeof result !== 'string' && result !== undefined
+              ? <Table className={classes.table} size='small' aria-label='a dense table'>
+                {renderHeader()}
+                <TableBody>
+                  {result.map((row, i) => (
+                    <TableRow key={row.name}>
+                      <TableCell component='th' scope='row' onClick={() => handleClick(row.name, i)}>
+                        {row.name}
+                      </TableCell>
+                      <TableCell align='right'>{row.category}</TableCell>
+                      <TableCell align='right'>{row.score}</TableCell>
+                      <TableCell align='right'>{row.content}</TableCell>
+                      <TableCell align='right'>{row.location}</TableCell>
+                      <TableCell align='right'>{row.page_rank}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
 
-            </Grid>
-
-        </div>
-    )
+              </Table> : null}
+          </div>}
+      </Paper>
+    </div>
+  )
 }
+
+// return (
+// console.log(result)
+//     <div className={classes.root}>
+//         <Grid container spacing={2}>
+//             <Grid item xs={12} md={6}>
+//                 <div className={classes.demo}>
+//                     <List >
+//                         {result !== undefined ?
+//                             typeof result === 'string' ? <ListItem>
+//                                 <ListItemText
+//                                     key={result}
+//                                     primary={result}
+//                                 />
+//                             </ListItem> :
+//                                 result.map(link => (
+//                                     <ListItem>
+//                                         <ListItemText
+//                                             key={link.name}
+//                                             primary={link.name}
+//                                             secondary={link.content}
+//                                         />
+//                                     </ListItem>
+//                                 ))
+//                             : null}
+//                     </List>
+//                 </div>
+//             </Grid>
+
+//         </Grid>
+
+//     </div>
