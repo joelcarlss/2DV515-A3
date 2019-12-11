@@ -1,31 +1,26 @@
 import React from 'react'
-import SearchEngine from './components/searchEngine'
+import { Router, Route, Switch } from 'react-router-dom'
 // import Table from './components/DenseTable'
 // import SimpleSelect from './components/SimpleSelect'
+import history from './config/history'
 import { Provider } from './useAppState'
-import List from '@material-ui/core/List'
-import './App.css'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Container from '@material-ui/core/Container'
-import InteractiveList from './components/linkList'
-function App() {
+import Main from './pages/Main'
+import wiki from './components/wiki'
+
+function App () {
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <div>
-          <CssBaseline />
-          <Container maxWidth='sm' textAlign='center' >
-            <List style={{ maxHeight: '100%', overflow: 'visible' }} >
-              <center style={{ marginLeft: '70px', display: 'flex', flexWrap: 'wrap', padding: '0', margin: '0' }}>
-                <h1 style={{ color: 'red' }}>o</h1><h1 style={{ color: 'yellow' }}>o</h1><h1 style={{ color: 'blue' }}>g</h1><h1 style={{ color: 'green' }}>l</h1><h1 style={{ color: 'red' }}>e</h1>
-              </center>
-              <SearchEngine />
-              < InteractiveList />
-            </List>
-          </Container>
-        </div>
-      </header>
-    </div >
+    <Router history={history}>
+      <div className='App'>
+        <header className='App-header'>
+
+          <Switch>
+            <Route exact path='/' component={Main} />
+            <Route exact path='/wiki/:title/:id' component={wiki} />
+          </Switch>
+        </header>
+
+      </div>
+    </Router>
   )
 }
 
